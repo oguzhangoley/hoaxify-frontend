@@ -20,6 +20,8 @@ class LoginPage extends Component {
   onClickLogin = async (e) => {
     e.preventDefault();
     const { username, password } = this.state;
+    const { onLoginSuccess } = this.props;
+    const { push } = this.props.history;
     const creds = {
       username,
       password,
@@ -29,6 +31,8 @@ class LoginPage extends Component {
     });
     try {
       await login(creds);
+      push("/");
+      onLoginSuccess(username);
     } catch (err) {
       this.setState({
         error: err.response.data.message,

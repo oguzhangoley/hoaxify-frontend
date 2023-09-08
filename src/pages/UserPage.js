@@ -1,7 +1,12 @@
 import React from "react";
+import ProfileCart from "../components/ProfileCart";
 
-const UserPage = () => {
-  return <div className="container">UserPage</div>;
+const UserPage = (props) => {
+  return (
+    <div className="container">
+      <ProfileCart username={props.username} />
+    </div>
+  );
 };
 
 export default UserPage;

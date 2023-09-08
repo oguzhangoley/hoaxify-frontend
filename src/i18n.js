@@ -12,6 +12,7 @@ i18next.use(initReactI18next).init({
         Password: "Parsword",
         "Password Repeat": "Password Repeat",
         Login: "Login",
+        Logout: "Logout",
       },
     },
     tr: {
@@ -23,6 +24,7 @@ i18next.use(initReactI18next).init({
         Password: "Şifre",
         "Password Repeat": "Şifre Tekrar",
         Login: "Giriş Yap",
+        Logout: "Çıkış Yap",
       },
     },
   },
