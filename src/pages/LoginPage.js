@@ -4,12 +4,12 @@ import { login } from "../api/apiCalls";
 import { withTranslation } from "react-i18next";
 import ButtonWithProgress from "../components/ButtonWithProgress";
 import { withApiProgress } from "../shared/ApiProgress";
-import { Authentication } from "../shared/AuthenticationContext";
-
+import { connect } from "react-redux";
+import { loginHandler, loginSuccess } from "../redux/authActions";
+// import { Authentication } from "../shared/AuthenticationContext";
 
 class LoginPage extends Component {
-
-  static contextType = Authentication;
+  // static contextType = Authentication;
 
   state = {
     username: null,
@@ -25,8 +25,8 @@ class LoginPage extends Component {
   onClickLogin = async (e) => {
     e.preventDefault();
     const { username, password } = this.state;
-    const { onLoginSuccess } = this.context;
-    const { push } = this.props.history;
+    const { history, dispatch } = this.props;
+    const { push } = history;
     const creds = {
       username,
       password,
@@ -35,18 +35,18 @@ class LoginPage extends Component {
       error: null,
     });
     try {
-      const response = await login(creds);
-      console.log(response.data);
-      push("/");
+      // const response = await login(creds);
 
-      const authState = {
-        ...response.data,
-        password : password,
-      };
-      onLoginSuccess(authState);
+      // const authState = {
+      //   ...response.data,
+      //   password: password,
+      // };
+      // dispatch(loginSuccess(authState));
+      await dispatch(loginHandler(creds));
+      push("/");
     } catch (err) {
       this.setState({
-        error: "asd"//err.response.data.message,
+        error: "asd", //err.response.data.message,
       });
     }
   };
@@ -91,4 +91,5 @@ const loginPageWithApiProgress = withApiProgress(
   loginPageWithTranslation,
   "/api/v1/auth"
 );
-export default loginPageWithApiProgress;
+
+export default connect()(loginPageWithApiProgress);

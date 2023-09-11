@@ -11,30 +11,23 @@ import {
 } from "react-router-dom";
 import TopBar from "../components/TopBar";
 import { Component } from "react";
-import { Authentication } from "../shared/AuthenticationContext";
+import { connect } from "react-redux";
+// import { Authentication } from "../shared/AuthenticationContext";
 
 class App extends Component {
-  static contextType = Authentication;
+  // static contextType = Authentication;
   render() {
-    const isLoggedIn = this.context.state.isLoggedIn;
+    const { isLoggedIn } = this.props;
 
     return (
       <div>
         <Router>
-          <TopBar/>
+          <TopBar />
           <Switch>
             <Route exact path="/" component={HomePage} />
-            {!isLoggedIn && (
-              <Route
-                path="/login"
-                component={LoginPage}
-              />
-            )}
+            {!isLoggedIn && <Route path="/login" component={LoginPage} />}
             <Route path="/signup" component={UserSignupPage} />
-            <Route
-              path="/user/:username"
-              component={UserPage}
-            />
+            <Route path="/user/:username" component={UserPage} />
             <Redirect to="/" />
           </Switch>
         </Router>
@@ -44,4 +37,10 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = (store) => {
+  return {
+    isLoggedIn: store.isLoggedIn,
+  };
+};
+
+export default connect(mapStateToProps)(App);
