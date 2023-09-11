@@ -11,53 +11,29 @@ import {
 } from "react-router-dom";
 import TopBar from "../components/TopBar";
 import { Component } from "react";
+import { Authentication } from "../shared/AuthenticationContext";
 
 class App extends Component {
-  state = {
-    isLoggedIn: false,
-    username: undefined,
-  };
-
-  onLoginSuccess = (username) => {
-    this.setState({ username, isLoggedIn: true });
-  };
-
-  onLogoutSuccess = () => {
-    console.log("darari");
-    this.setState({ username: undefined, isLoggedIn: false });
-  };
+  static contextType = Authentication;
   render() {
-    const { isLoggedIn, username } = this.state;
+    const isLoggedIn = this.context.state.isLoggedIn;
 
     return (
       <div>
         <Router>
-          <TopBar
-            username={username}
-            isLoggedIn={isLoggedIn}
-            onLogoutSuccess={this.onLogoutSuccess}
-          />
+          <TopBar/>
           <Switch>
             <Route exact path="/" component={HomePage} />
             {!isLoggedIn && (
               <Route
                 path="/login"
-                component={(props) => {
-                  return (
-                    <LoginPage
-                      {...props}
-                      onLoginSuccess={this.onLoginSuccess}
-                    />
-                  );
-                }}
+                component={LoginPage}
               />
             )}
             <Route path="/signup" component={UserSignupPage} />
             <Route
               path="/user/:username"
-              component={(props) => {
-                return <UserPage {...props} username={username} />;
-              }}
+              component={UserPage}
             />
             <Redirect to="/" />
           </Switch>
